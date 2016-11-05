@@ -178,6 +178,14 @@ class CustomTransformTests: XCTestCase {
 		XCTAssertEqual(JSONOutput["color4lenght"] as? String, "FF0000")
 		XCTAssertEqual(JSONOutput["color8lenght"] as? String, "FF0000FF") // alphaToJSON = true
 	}
+
+	func testSetTransform() {
+		let set = Set([0, 1, 2])
+		let JSON: [String: Any] = ["setInt": Array(set)]
+		let transforms = mapper.map(JSON: JSON)
+
+		XCTAssertEqual(transforms?.setInt, set)
+	}
 }
 
 class Transforms: Mappable {
@@ -214,6 +222,8 @@ class Transforms: Mappable {
 	var color4lenght: TestHexColor?
 	var color8lenght: TestHexColor?
 
+	var setInt: Set<Int> = []
+
 	init(){
 		
 	}
@@ -248,6 +258,7 @@ class Transforms: Mappable {
 		color3lenght			<- (map["color3lenght"], HexColorTransform())
 		color4lenght			<- (map["color4lenght"], HexColorTransform())
 		color8lenght			<- (map["color8lenght"], HexColorTransform(alphaToJSON: true))
+		setInt				<- (map["setInt"], SetTransform())
 	}
 }
 
